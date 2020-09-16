@@ -1,5 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait
+from pyrogram.raw import functions
 
 from pyrogram.types import ChatPermissions
 
@@ -166,6 +167,13 @@ def flip(_, msg):
         msg.edit(text)
 
 
-app.run()
+@app.on_message(filters.command("un", prefixes="."))
+def unread_chat(app, message):
+    message.delete()
+    app.send(
+        functions.messages.MarkDialogUnread(
+            peer=app.resolve_peer(message.chat.id), unread=True
+        )
+    )
 
 app.run()
