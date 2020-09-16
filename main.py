@@ -69,6 +69,30 @@ def hack(_, msg):
     msg.edit("🦖 Найдены данные о существовании динозавров на земле!")
 
 
+@app.on_message(filters.command("pidor", prefixes=".") & filters.me)
+def hack(_, msg):
+    perc = 0
+
+    orig_text = msg.text.split(".pidor ", maxsplit=1)[1]
+    text = orig_text
+
+    while (perc < 100):
+        try:
+            text = "Обнаружение пидораса... " + str(perc) + "%"
+            msg.edit(text)
+
+            perc += random.randint(5, 10)
+            sleep(0.1)
+
+        except FloodWait as e:
+            sleep(e.x)
+
+    msg.edit(f"🟢 Пидорас обнаружен! {orig_text}")
+    sleep(3)
+
+
+
+
 REPLACEMENT_MAP = {
     "a": "ɐ",
     "b": "q",
