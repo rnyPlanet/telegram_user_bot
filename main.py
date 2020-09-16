@@ -72,13 +72,19 @@ def hack(_, msg):
 @app.on_message(filters.command("pidor", prefixes=".") & filters.me)
 def hack(_, msg):
     perc = 0
+    single_chat = None
 
-    orig_text = msg.text.split(".pidor ", maxsplit=1)[1]
-    text = orig_text
+    usernames = msg.text.split(" ")
+    if len(usernames) == 1:
+        usernames = None
+        try:
+            single_chat = msg.chat.username
+        except:
+            print()
 
     while (perc < 100):
         try:
-            text = "Обнаружение пидораса... " + str(perc) + "%"
+            text = "📡 Система поиска пидарасов активированна... " + str(perc) + "%"
             msg.edit(text)
 
             perc += random.randint(5, 10)
@@ -87,9 +93,24 @@ def hack(_, msg):
         except FloodWait as e:
             sleep(e.x)
 
-    msg.edit(f"🟢 Пидорас обнаружен! {orig_text}")
-    sleep(3)
+    if usernames is not None:
+        if len(usernames) == 2:
+            msg.edit(f"🟢 Пидарас обнаружен! {usernames[1]}")
+        elif len(usernames) > 2:
+            pidors = "🟢 Пидарасы обнаружены! "
+            for i in usernames:
+                if '.pidor' not in i:
+                    pidors += " " + i
 
+            msg.edit(pidors)
+    else:
+        if single_chat == None:
+            msg.edit(f"🟢 Ты Пидарас!")
+        else:
+            msg.edit(f"🟢 Пидарас обнаружен! @{single_chat}")
+
+
+    sleep(3)
 
 
 
