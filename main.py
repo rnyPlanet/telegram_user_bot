@@ -10,9 +10,24 @@ import random
 
 app = Client("my_account")
 
+commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown"]
 
-# Команда type
-@app.on_message(filters.command("type", prefixes=".") & filters.me)
+
+@app.on_message(filters.command(commands[0], prefixes=".") & filters.me)
+def type(_, msg):
+    coms = "Commands: "
+    for i in commands:
+        coms += " \n." + i
+        if i in "type":
+            coms += " __text__"
+        if i in "pidor":
+            coms += " __empty__ OR @uname OR @uname1 @unameN"
+        if i in "flip":
+            coms += " __text__"
+
+    msg.edit(coms)
+
+@app.on_message(filters.command(commands[1], prefixes=".") & filters.me)
 def type(_, msg):
     orig_text = msg.text.split(".type ", maxsplit=1)[1]
     text = orig_text
@@ -34,7 +49,7 @@ def type(_, msg):
             sleep(e.x)
 
 
-@app.on_message(filters.command("hack", prefixes=".") & filters.me)
+@app.on_message(filters.command(commands[2], prefixes=".") & filters.me)
 def hack(_, msg):
     perc = 0
 
@@ -69,7 +84,7 @@ def hack(_, msg):
     msg.edit("🦖 Найдены данные о существовании динозавров на земле!")
 
 
-@app.on_message(filters.command("pidor", prefixes=".") & filters.me)
+@app.on_message(filters.command(commands[3], prefixes=".") & filters.me)
 def hack(_, msg):
     perc = 0
     single_chat = None
@@ -111,7 +126,6 @@ def hack(_, msg):
 
 
     sleep(3)
-
 
 
 REPLACEMENT_MAP = {
@@ -196,7 +210,7 @@ REPLACEMENT_MAP = {
 }
 
 
-@app.on_message(filters.command("flip", prefixes=".") & filters.me)
+@app.on_message(filters.command(commands[4], prefixes=".") & filters.me)
 def flip(_, msg):
     text = msg.text.split(".flip", maxsplit=1)[1]
     final_str = ""
@@ -212,7 +226,7 @@ def flip(_, msg):
         msg.edit(text)
 
 
-@app.on_message(filters.command("un", prefixes="."))
+@app.on_message(filters.command(commands[5], prefixes="."))
 def unread_chat(app, message):
     message.delete()
     app.send(
@@ -220,5 +234,10 @@ def unread_chat(app, message):
             peer=app.resolve_peer(message.chat.id), unread=True
         )
     )
+
+
+@app.on_message(filters.command(commands[6], prefixes=".") & filters.me)
+def type(_, msg):
+    msg.edit("Дружочек, ты видимо не понял с кем общаешься. Вот эта твоя манера речи 'клоунская' меня не впечатляет, давай встретимся, объясню на понятном тебе языке, языке боли")
 
 app.run()
