@@ -26,6 +26,8 @@ def type(_, msg):
             coms += " __text__"
         if i in "rat":
             coms += " __empty__ OR @uname OR @uname1 @unameN"
+        if i in "sleep":
+            coms += " __empty__ OR @uname OR @uname1 @unameN"
 
     msg.edit(coms)
 
@@ -287,7 +289,7 @@ def hack(_, msg):
     sleep(3)
 
 
-@app.on_message(filters.command(commands[8], prefixes="."))
+@app.on_message(filters.command(commands[8], prefixes=".") & filters.me)
 def hack(_, msg):
     try:
         msg.edit(f"соси ❤")
@@ -295,7 +297,7 @@ def hack(_, msg):
         app.send_message(msg.chat.id, "соси ❤")
 
 
-@app.on_message(filters.command(commands[9], prefixes="."))
+@app.on_message(filters.command(commands[9], prefixes=".") & filters.me)
 def hack(_, msg):
     single_chat = None
 
