@@ -10,7 +10,7 @@ import random
 
 app = Client("my_account")
 
-commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown"]
+commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat"]
 
 
 @app.on_message(filters.command(commands[0], prefixes=".") & filters.me)
@@ -24,8 +24,11 @@ def type(_, msg):
             coms += " __empty__ OR @uname OR @uname1 @unameN"
         if i in "flip":
             coms += " __text__"
+        if i in "rat":
+            coms += " __empty__ OR @uname OR @uname1 @unameN"
 
     msg.edit(coms)
+
 
 @app.on_message(filters.command(commands[1], prefixes=".") & filters.me)
 def type(_, msg):
@@ -120,10 +123,9 @@ def hack(_, msg):
             msg.edit(pidors)
     else:
         if single_chat == None:
-            msg.edit(f"🟢 Ты Пидарас!")
+            msg.edit(f"🟢 Ты пидарас!")
         else:
             msg.edit(f"🟢 Пидарас обнаружен! @{single_chat}")
-
 
     sleep(3)
 
@@ -226,7 +228,7 @@ def flip(_, msg):
         msg.edit(text)
 
 
-@app.on_message(filters.command(commands[5], prefixes="."))
+@app.on_message(filters.command(commands[5], prefixes=".") & filters.me)
 def unread_chat(app, message):
     message.delete()
     app.send(
@@ -239,5 +241,50 @@ def unread_chat(app, message):
 @app.on_message(filters.command(commands[6], prefixes=".") & filters.me)
 def type(_, msg):
     msg.edit("Дружочек, ты видимо не понял с кем общаешься. Вот эта твоя манера речи 'клоунская' меня не впечатляет, давай встретимся, объясню на понятном тебе языке, языке боли")
+
+
+@app.on_message(filters.command(commands[7], prefixes=".") & filters.me)
+def hack(_, msg):
+    perc = 0
+    single_chat = None
+
+    usernames = msg.text.split(" ")
+    if len(usernames) == 1:
+        usernames = None
+        try:
+            single_chat = msg.chat.username
+        except:
+            print()
+
+    while (perc < 100):
+        try:
+            text = "📡 Поиск крыс... " + str(perc) + "%"
+            msg.edit(text)
+
+            perc += random.randint(5, 10)
+            sleep(0.1)
+
+        except FloodWait as e:
+            sleep(e.x)
+
+    if usernames is not None:
+        if len(usernames) == 2:
+            msg.edit(f"🐀 Ебать {usernames[1]} крыса!")
+        elif len(usernames) > 2:
+            rats = "🐀 Ебать "
+            for i in usernames:
+                if '.rat' not in i:
+                    rats += " " + i
+
+            rats += " крысы!"
+            msg.edit(rats)
+    else:
+        if single_chat == None:
+            msg.edit(f"🐀 Ты крыса!")
+        else:
+            msg.edit(f"🐀 Ебать @{single_chat} крыса!")
+
+    sleep(3)
+
 
 app.run()
