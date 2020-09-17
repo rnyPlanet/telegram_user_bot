@@ -10,7 +10,7 @@ import random
 
 app = Client("my_account")
 
-commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat"]
+commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat", "test", "sleep"]
 
 
 @app.on_message(filters.command(commands[0], prefixes=".") & filters.me)
@@ -271,7 +271,7 @@ def hack(_, msg):
         if len(usernames) == 2:
             msg.edit(f"🐀 Ебать {usernames[1]} крыса!")
         elif len(usernames) > 2:
-            rats = "🐀 Ебать "
+            rats = "🐀 Ебать"
             for i in usernames:
                 if '.rat' not in i:
                     rats += " " + i
@@ -286,5 +286,62 @@ def hack(_, msg):
 
     sleep(3)
 
+
+@app.on_message(filters.command(commands[8], prefixes="."))
+def hack(_, msg):
+    try:
+        msg.edit(f"соси ❤")
+    except:
+        app.send_message(msg.chat.id, "соси ❤")
+
+
+@app.on_message(filters.command(commands[9], prefixes="."))
+def hack(_, msg):
+    single_chat = None
+
+    usernames = msg.text.split(" ")
+    if len(usernames) == 1:
+        usernames = None
+        try:
+            single_chat = msg.chat.username
+        except:
+            print()
+
+    try:
+        if usernames is not None:
+            if len(usernames) == 2:
+                msg.edit(f"Бля, {usernames[1]} иди поспи иди приляг!")
+            elif len(usernames) > 2:
+                rats = "Бля"
+                for i in usernames:
+                    if '.sleep' not in i:
+                        rats += " " + i
+
+                rats += " идите поспите идите прилягте!"
+                msg.edit(rats)
+        else:
+            if single_chat == None:
+                msg.edit(f"Бля, иди поспи иди приляг!")
+            else:
+                msg.edit(f"Бля, @{single_chat} иди поспи иди приляг!")
+    except:
+        if usernames is not None:
+            if len(usernames) == 2:
+                app.send_message(msg.chat.id, f"Бля, {usernames[1]} иди поспи иди приляг!")
+            elif len(usernames) > 2:
+                rats = "Бля"
+                for i in usernames:
+                    if '.sleep' not in i:
+                        rats += " " + i
+
+                rats += " идите поспите идите прилягте!"
+                app.send_message(msg.chat.id, rats)
+        else:
+            if single_chat == None:
+                app.send_message(msg.chat.id, f"Бля, иди поспи иди приляг!")
+            else:
+                app.send_message(msg.chat.id, f"Бля, @{single_chat} иди поспи иди приляг!")
+
+    sleep(3)
 
 app.run()
