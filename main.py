@@ -10,7 +10,7 @@ import random
 
 app = Client("my_account")
 
-commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat", "test", "sleep"]
+commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat", "test", "sleep", "thx"]
 
 
 @app.on_message(filters.command(commands[0], prefixes=".") & filters.me)
@@ -28,6 +28,8 @@ def type(_, msg):
             coms += " __empty__ OR @uname OR @uname1 @unameN"
         if i in "sleep":
             coms += " __empty__ OR @uname OR @uname1 @unameN"
+        if i in "thx":
+            coms += " __empty__ OR @uname"
 
     msg.edit(coms)
 
@@ -345,5 +347,27 @@ def hack(_, msg):
                 app.send_message(msg.chat.id, f"Бля, @{single_chat} иди поспи иди приляг!")
 
     sleep(3)
+
+@app.on_message(filters.command(commands[10], prefixes=".") & filters.me)
+def photo(_, msg):
+    msg.delete()
+    single_chat = None
+
+    usernames = msg.text.split(" ")
+    if len(usernames) == 1:
+        usernames = None
+        try:
+            single_chat = msg.chat.username
+        except:
+            print()
+
+    if usernames is not None:
+        if len(usernames) == 2:
+            app.send_photo(msg.chat.id, "photo.jpg", caption=f"{usernames[1]}")
+    else:
+        if single_chat == None:
+            app.send_photo(msg.chat.id, "photo.jpg")
+        else:
+            app.send_photo(msg.chat.id, "photo.jpg", caption=f"@{single_chat}")
 
 app.run()
