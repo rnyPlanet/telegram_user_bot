@@ -10,7 +10,7 @@ import random
 
 app = Client("my_account")
 
-commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat", "test", "sleep", "thx"]
+commands = ["coms", "type", "hack", "pidor", "flip", "un", "clown", "rat", "test", "sleep", "thx", "d"]
 
 
 @app.on_message(filters.command(commands[0], prefixes=".") & filters.me)
@@ -30,7 +30,8 @@ def type(_, msg):
             coms += " __empty__ OR @uname OR @uname1 @unameN"
         if i in "thx":
             coms += " __empty__ OR @uname"
-
+        if i in "d":
+            coms += ""
     msg.edit(coms)
 
 
@@ -291,6 +292,15 @@ def hack(_, msg):
     sleep(3)
 
 
+@app.on_message(filters.command(commands[7], prefixes=".") & filters.text)
+def del_rat(_, msg):
+    me = app.get_me()
+    try:
+        app.delete_messages(msg.chat.id, msg.message_id)
+    except:
+        if me.username in msg.message:
+            app.send_message(msg.chat.id, "Да сам ты крыса!")
+
 @app.on_message(filters.command(commands[8], prefixes=".") & filters.me)
 def hack(_, msg):
     try:
@@ -309,7 +319,7 @@ def hack(_, msg):
         try:
             single_chat = msg.chat.username
         except:
-            print()
+            pass
 
     try:
         if usernames is not None:
@@ -359,7 +369,7 @@ def photo(_, msg):
         try:
             single_chat = msg.chat.username
         except:
-            print()
+            pass
 
     if usernames is not None:
         if len(usernames) == 2:
@@ -369,5 +379,13 @@ def photo(_, msg):
             app.send_photo(msg.chat.id, "photo.jpg")
         else:
             app.send_photo(msg.chat.id, "photo.jpg", caption=f"@{single_chat}")
+
+@app.on_message(filters.command(commands[11], prefixes=".") & filters.me)
+def d(_, msg):
+    try:
+        app.delete_messages(msg.chat.id, msg.reply_to_message.message_id)
+    except:
+        pass
+    msg.delete()
 
 app.run()
